@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Liquid</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Liquid">
+<meta name="theme-color" content="#0E9F8E">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAADhUlEQVR4nO3dPU4bURSGYYhcJVJYSbosyEmbNGwElgALomMl9EikixAY7Lk/c+98fh6JBiFmitdH18fYXH6/u3m5gBBfRt8AtCRoogiaKIImiqCJImiiCJoogiaKoIkiaKIImiiCJoqgiSJoogiaKIImiqCJImiiCJoogiaKoIkiaKIImiiCJoqgiSJoogiaKIImiqCJImiiCJoogiaKoIkiaKIImiiCJoqgiSJoogiaKIImiqCJImiiCJoogiaKoIkiaKIImiiCJoqgibIbfQOzedpfL/r5q/vbTndCCUFXOvQAEPk4gu7gbeQCX4+gV/A6cHH35Unhyp7214vP6ZxO0IMIuw9BDybstgQ9CVG3IeiJmNb1BF3g6v72/1cPoi5nbVfpUNQtgnzaX1vxFTChO2g1wU3q5QTdWW3Yol5G0CupmdqiPp2gBxB1P4IepGRai/o4QQ8m6rYEPQHruXYEPYklUZvSHxP0REzqeoKezKlRm9KHCZoogp6Qo0c5QW+YY8d7gp6UKV1G0EQRNFEETRRBE0XQRBE0UQQ9KTvmMoLeMLvq9wQ9IdO5nKCJIujJnDqdHTcOE/REHDXqCXoSS2I2nT8m6AmYzO0IejD/Rq4tnz46SMlUFvNxJvQAYu7HhF5JzTlZzKcTdGe1T/jEvIygO2i1tRDzcoKu1GvlJuYygi7Qe28s5nKCnoiQ61nbTULMbZjQgwm5LUEPIuQ+BL2y0SE/Pzx2v8bu54/u1/jw2sOufEbWjHiNYJfew5qBC7qDcwv4mGP32DL4y+93Ny/NfttEtvw3xp89ILYQcK2awE3oyZ1DwG/VHFkEPaFzjPgzSwIXNJvzWeC754fHoWsWqPU68N3bb1xcjN0jQo2DRw6Bs1UnnaEFzlYUPSkUOLO6/PrnV/cXVrYU/CkvyHz7+3uFO6HEKmu7mSb60R3vfpXboJMhe2gvHNCLd6wQRdBEETRRBE0UQRNF0EQRNFEETRRBE0XQRBE0UQRNFEETRdBEETRRBE0UQRNF0ERZ5U2ysBYTmiiCJoqgiSJoogiaKIImiqCJImiiCJoogiaKoIkiaKIImiiCJoqgiSJoogiaKIImiqCJImiiCJoogiaKoIkiaKIImiiCJoqgiSJoogiaKIImiqCJImiiCJoogiaKoIkiaKIImiiCJoqgiSJoogiaKIImiqCJImiiCJoo/wAVJsXKQXT9HgAAAABJRU5ErkJggg==">
+<style>
+  :root{
+    --bg:#EDF1F4; --card:#FFFFFF; --ink:#15212B; --muted:#6B7884; --line:#E1E7EC;
+    --teal:#0E9F8E; --teal-d:#0A6B61; --teal-soft:#DBF2EE;
+    --gold:#B8861F; --gold-soft:#F6ECD4;
+    --coral:#D75E37; --coral-soft:#F8E2D9;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0D1317; --card:#161E24; --ink:#E9EDF0; --muted:#93A1AC; --line:#27323B;
+      --teal:#2BC0AE; --teal-d:#82DBCF; --teal-soft:#11302C;
+      --gold:#E0B556; --gold-soft:#2A2414; --coral:#E58156; --coral-soft:#2E1C13;
+    }
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  .wrap{max-width:480px;margin:0 auto;padding:14px 14px 40px;}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums;}
+  .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+
+  header{display:flex;align-items:center;justify-content:space-between;padding:6px 2px 14px;}
+  .brand{cursor:pointer;user-select:none;}
+  .brand b{font-size:21px;font-weight:600;letter-spacing:-.01em;}
+  .brand .dot{color:var(--teal);}
+  .brand span{display:block;font-size:11px;color:var(--muted);letter-spacing:.04em;}
+  .gear{background:var(--card);border:1px solid var(--line);color:var(--ink);width:40px;height:40px;border-radius:12px;font-size:18px;cursor:pointer;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px;}
+
+  .today .big{font-size:46px;font-weight:600;line-height:1.05;letter-spacing:-.02em;margin:4px 0 2px;color:var(--teal-d);}
+  .today .cur{font-size:22px;color:var(--muted);font-weight:500;}
+  .today .lbl{font-size:13px;color:var(--muted);margin-bottom:14px;}
+  .gauge{height:12px;border-radius:8px;background:var(--teal-soft);overflow:hidden;}
+  .gauge > i{display:block;height:100%;background:var(--teal);width:50%;transition:width .35s ease;}
+  .gauge.over > i{background:var(--coral);}
+  .gauge.over{background:var(--coral-soft);}
+  .meta{display:flex;justify-content:space-between;margin-top:10px;font-size:13px;}
+  .meta .v{font-weight:600;}
+  .over-txt{color:var(--coral);}
+
+  .seg{display:flex;background:var(--bg);border-radius:12px;padding:4px;gap:4px;margin-bottom:12px;}
+  .seg button{flex:1;border:0;background:transparent;color:var(--muted);font-size:14px;font-weight:600;padding:9px 0;border-radius:9px;cursor:pointer;}
+  .seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.06);}
+  .row{display:flex;gap:8px;}
+  input,select{width:100%;font-size:16px;font-family:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;outline:none;}
+  input:focus,select:focus{border-color:var(--teal);}
+  .amt{flex:1.4;}
+  .btn{border:0;border-radius:12px;padding:13px;font-size:15px;font-weight:600;cursor:pointer;width:100%;}
+  .btn-go{background:var(--teal);color:#fff;margin-top:10px;}
+  .btn-ghost{background:var(--bg);color:var(--ink);border:1px solid var(--line);}
+  .hide{display:none!important;}
+
+  .wknav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .wknav button{background:var(--bg);border:1px solid var(--line);color:var(--ink);width:36px;height:36px;border-radius:10px;font-size:16px;cursor:pointer;}
+  .wknav .t{font-weight:600;font-size:15px;}
+  .days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+  .day{position:relative;background:var(--bg);border:1px solid transparent;border-radius:12px;padding:8px 2px 6px;text-align:center;cursor:pointer;}
+  .day .wd{font-size:10px;color:var(--muted);font-weight:600;}
+  .day .nm{font-size:16px;font-weight:600;margin-top:1px;}
+  .day .sp{font-size:9px;color:var(--muted);margin-top:2px;min-height:11px;}
+  .day.sel{border-color:var(--teal);}
+  .day.today .nm{color:var(--teal-d);}
+  .day .pay{position:absolute;top:3px;right:5px;font-size:9px;color:var(--gold);font-weight:700;}
+  .day.todo .pay{color:var(--coral);}
+
+  .daylist{margin-top:14px;}
+  .daylist h4{margin:0 0 8px;font-size:14px;font-weight:600;}
+  .item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);}
+  .item:last-child{border-bottom:0;}
+  .item .n{font-size:14px;}
+  .item .n small{display:block;color:var(--muted);font-size:11px;}
+  .item .a{font-weight:600;font-size:14px;}
+  .item .a.in{color:var(--teal-d);}
+  .item .x{margin-left:10px;color:var(--muted);background:none;border:0;font-size:16px;cursor:pointer;padding:2px 6px;}
+  .empty{color:var(--muted);font-size:13px;padding:8px 0;}
+
+  .savetop{display:flex;align-items:baseline;justify-content:space-between;}
+  .savetop .big{font-size:30px;font-weight:600;color:var(--gold);}
+  .savebar{height:10px;border-radius:7px;background:var(--gold-soft);overflow:hidden;margin:12px 0 6px;}
+  .savebar > i{display:block;height:100%;background:var(--gold);width:0;}
+  .savesub{font-size:12px;color:var(--muted);}
+  .sweep{margin-top:12px;}
+
+  .tip{background:var(--teal-soft);border:1px solid var(--line);border-radius:16px;padding:14px 16px;color:var(--teal-d);font-size:14px;line-height:1.55;}
+
+  .ovl{position:fixed;inset:0;background:rgba(10,16,20,.45);display:flex;align-items:flex-end;justify-content:center;z-index:50;padding:0;}
+  .sheet{background:var(--card);width:100%;max-width:480px;border-radius:22px 22px 0 0;padding:22px 18px calc(26px + env(safe-area-inset-bottom));}
+  .sheet h3{margin:0 0 4px;font-size:20px;font-weight:600;}
+  .sheet p.sub{margin:0 0 16px;color:var(--muted);font-size:13px;}
+  .field{margin-bottom:12px;}
+  .field label{display:block;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:5px;}
+  .lock{background:var(--gold-soft);color:var(--gold);border-radius:12px;padding:12px 14px;font-size:14px;font-weight:600;margin:6px 0 14px;}
+
+  .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font-size:14px;max-width:88%;text-align:center;opacity:0;transition:.3s;z-index:60;pointer-events:none;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .settings-row{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px;}
+  .settings-row label{font-size:13px;color:var(--muted);flex:1;}
+  .settings-row input{max-width:130px;text-align:right;}
+  .danger{color:var(--coral);}
+  .small{font-size:12px;color:var(--muted);}
+  .cats{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .cats button{border:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:13px;font-weight:600;padding:7px 12px;border-radius:20px;cursor:pointer;}
+  .cats button.on{background:var(--teal);color:#fff;border-color:var(--teal);}
+  .tag{display:inline-block;font-size:10px;font-weight:600;color:var(--teal-d);background:var(--teal-soft);border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:1px;}
+  .wkend .big{font-size:34px;font-weight:600;color:var(--teal-d);letter-spacing:-.02em;}
+  .wkend .three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+  .wkend .three > div{background:var(--bg);border-radius:10px;padding:8px;text-align:center;}
+  .wkend .three .d{font-size:11px;color:var(--muted);font-weight:600;}
+  .wkend .three .m{font-size:14px;font-weight:600;margin-top:2px;}
+  .catsum{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;font-size:12px;color:var(--muted);}
+  .catsum span b{color:var(--ink);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brand" id="brand">
+      <b>Liquid<span class="dot">.</span></b>
+      <span>your money, day by day</span>
+    </div>
+    <button class="gear" id="openSettings" aria-label="Settings">&#9881;</button>
+  </header>
+
+  <section class="card today">
+    <div class="eyebrow" id="todayLbl">today</div>
+    <div><span class="big mono" id="canToday">0</span> <span class="cur" id="cur1">&#8381;</span></div>
+    <div class="lbl">you can spend today</div>
+    <div class="gauge" id="gauge"><i id="gaugeFill"></i></div>
+    <div class="meta">
+      <div>left this week<br><span class="v mono" id="leftWeek">0</span></div>
+      <div style="text-align:right">spent today<br><span class="v mono" id="spentToday">0</span></div>
+    </div>
+  </section>
+
+  <section class="card wkend" id="wkendCard">
+    <div class="eyebrow" id="wkendLbl">weekend plan</div>
+    <div><span class="big mono" id="wkendNum">0</span> <span class="cur">&#8381;</span></div>
+    <div class="lbl small" id="wkendSub"></div>
+    <div class="three">
+      <div><div class="d">Fri</div><div class="m mono" id="wFri">0</div></div>
+      <div><div class="d">Sat</div><div class="m mono" id="wSat">0</div></div>
+      <div><div class="d">Sun</div><div class="m mono" id="wSun">0</div></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="seg">
+      <button id="modeOut" class="on">Spent</button>
+      <button id="modeIn">Got money</button>
+    </div>
+    <div class="row">
+      <input class="amt mono" id="amtInput" type="number" inputmode="decimal" placeholder="0" />
+      <input id="noteInput" type="text" placeholder="note (coffee, taxi...)" />
+    </div>
+    <div class="cats" id="cats">
+      <button data-c="Food" class="on">Food</button>
+      <button data-c="Transport">Transport</button>
+      <button data-c="Entertainment">Fun</button>
+      <button data-c="Shopping">Shopping</button>
+      <button data-c="Other">Other</button>
+    </div>
+    <div class="field hide" id="destWrap" style="margin-top:10px;margin-bottom:0">
+      <label>where does it go?</label>
+      <select id="destSelect">
+        <option value="save">To savings</option>
+        <option value="spend">To this week's spending</option>
+      </select>
+    </div>
+    <button class="btn btn-go" id="addBtn">Add for <span id="addDayLbl">today</span></button>
+  </section>
+
+  <section class="card">
+    <div class="wknav">
+      <button id="prevWk" aria-label="Previous week">&#8249;</button>
+      <div class="t" id="wkTitle">Week</div>
+      <button id="nextWk" aria-label="Next week">&#8250;</button>
+    </div>
+    <div class="days" id="days"></div>
+    <div class="catsum" id="catSum"></div>
+    <div class="sweep hide" id="sweepWrap">
+      <button class="btn btn-ghost" id="sweepBtn"></button>
+    </div>
+    <button class="btn btn-ghost" id="exportWeekBtn" style="margin-top:10px">Export this week (to send for analysis)</button>
+    <div class="daylist" id="dayList"></div>
+  </section>
+
+  <section class="card">
+    <div class="savetop">
+      <div>
+        <div class="eyebrow">saved so far</div>
+        <div class="big mono" id="savedTotal">0</div>
+      </div>
+      <div style="text-align:right">
+        <div class="small">this month</div>
+        <div class="mono" id="monthSaved" style="font-weight:600">0</div>
+      </div>
+    </div>
+    <div class="savebar"><i id="saveFill"></i></div>
+    <div class="savesub" id="saveSub"></div>
+  </section>
+
+  <footer class="tip" id="tip"></footer>
+</div>
+
+<div class="ovl hide" id="paydayOvl">
+  <div class="sheet">
+    <h3 id="payTitle">Payday</h3>
+    <p class="sub">New money in. Let's place it before your brain spends it.</p>
+    <div class="field">
+      <label>How much did you receive?</label>
+      <input class="mono" id="payAmount" type="number" inputmode="decimal" />
+    </div>
+    <div class="lock" id="payLock"></div>
+    <button class="btn btn-go" id="payConfirm">Lock savings &amp; continue</button>
+    <button class="btn btn-ghost" id="paySkip" style="margin-top:8px">Not today</button>
+  </div>
+</div>
+
+<div class="ovl hide" id="setOvl">
+  <div class="sheet">
+    <h3>Settings</h3>
+    <p class="sub">Your plan. Change anytime.</p>
+    <div class="settings-row"><label>Weekly spend limit</label><input class="mono" id="sWeekly" type="number"></div>
+    <div class="settings-row"><label>Keep for savings each week</label><input class="mono" id="sReserve" type="number"></div>
+    <div class="settings-row"><label>15th &mdash; amount you get</label><input class="mono" id="s15a" type="number"></div>
+    <div class="settings-row"><label>15th &mdash; lock to savings</label><input class="mono" id="s15s" type="number"></div>
+    <div class="settings-row"><label>30th &mdash; amount you get</label><input class="mono" id="s30a" type="number"></div>
+    <div class="settings-row"><label>30th &mdash; lock to savings</label><input class="mono" id="s30s" type="number"></div>
+    <div class="settings-row"><label>Goal name</label><input id="sGoalName" type="text"></div>
+    <div class="settings-row"><label>Goal target (0 = off)</label><input class="mono" id="sGoalTarget" type="number"></div>
+    <button class="btn btn-go" id="saveSettings">Save settings</button>
+    <div class="row" style="margin-top:10px;gap:8px">
+      <button class="btn btn-ghost" id="exportBtn">Export backup</button>
+      <button class="btn btn-ghost" id="importBtn">Import backup</button>
+    </div>
+    <input id="importFile" type="file" accept="application/json" class="hide">
+    <button class="btn btn-ghost danger" id="resetBtn" style="margin-top:8px">Erase everything</button>
+    <button class="btn btn-ghost" id="closeSettings" style="margin-top:8px">Close</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ICON512="data:image/png;base64,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ACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABB/wN9uCda46b2DwAAAABJRU5ErkJggg==";
+const LS="liquid_v1";
+let mem=null;
+
+function dStore(){return{settings:{currency:"\u20BD",weeklyLimit:7000,p15a:45000,p15s:2000,p30a:25000,p30s:3000,goalName:"Car fund",goalTarget:0,weekendReserve:0},expenses:{},paydays:{},sweeps:{},saveLog:[],createdAt:tStr(new Date())};}
+let S=dStore();
+
+function load(){try{const r=localStorage.getItem(LS);if(r){const o=JSON.parse(r);S=Object.assign(dStore(),o);S.settings=Object.assign(dStore().settings,o.settings||{});}}catch(e){if(mem)S=mem;}}
+function save(){mem=S;try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}}
+
+function pad(n){return String(n).padStart(2,"0");}
+function tStr(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+function fromStr(s){const p=s.split("-").map(Number);return new Date(p[0],p[1]-1,p[2]);}
+function today(){return tStr(new Date());}
+function addDays(d,n){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());x.setDate(x.getDate()+n);return x;}
+function mondayOf(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());const w=(x.getDay()+6)%7;x.setDate(x.getDate()-w);return x;}
+function weekDates(m){const a=[];for(let i=0;i<7;i++)a.push(tStr(addDays(m,i)));return a;}
+function fmt(n){return Math.round(n).toLocaleString("ru-RU");}
+function cur(){return S.settings.currency||"\u20BD";}
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+function paydayKind(s){const d=fromStr(s);const day=d.getDate();const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();const p30=Math.min(30,last);if(day===15)return"15";if(day===p30)return"30";return null;}
+function dayEntries(s){return S.expenses[s]||[];}
+function daySpent(s){return dayEntries(s).reduce((a,e)=>a+e.amt,0);}
+function weekSpent(m){return weekDates(m).reduce((a,s)=>a+daySpent(s),0);}
+function saveTotal(){return S.saveLog.reduce((a,e)=>a+e.amt,0);}
+function monthSaved(){const t=today().slice(0,7);return S.saveLog.filter(e=>e.date.slice(0,7)===t).reduce((a,e)=>a+e.amt,0);}
+
+let viewMon=mondayOf(new Date());
+let sel=today();
+let mode="out";
+let cat="Food";
+
+function renderToday(){
+  const m=mondayOf(new Date());
+  const wd=(new Date().getDay()+6)%7;
+  const left=7-wd;
+  const wk=weekDates(m);
+  let before=0,tod=0;
+  wk.forEach((s,i)=>{const v=daySpent(s);if(i<wd)before+=v;else if(i===wd)tod=v;});
+  const rem=S.settings.weeklyLimit-before;
+  const per=left>0?rem/left:rem;
+  let can=per-tod; if(can<0)can=0;
+  document.getElementById("canToday").textContent=fmt(can);
+  document.getElementById("spentToday").textContent=fmt(tod)+" "+cur();
+  const lw=S.settings.weeklyLimit-weekSpent(m);
+  const lwEl=document.getElementById("leftWeek");
+  if(lw<0){lwEl.innerHTML='<span class="over-txt">over '+fmt(-lw)+" "+cur()+"</span>";}
+  else{lwEl.textContent=fmt(lw)+" "+cur();}
+  const g=document.getElementById("gauge"),f=document.getElementById("gaugeFill");
+  const pct=Math.max(0,Math.min(100,(lw/S.settings.weeklyLimit)*100));
+  f.style.width=(lw<=0?100:pct)+"%";
+  g.classList.toggle("over",lw<0);
+}
+
+function renderWeek(){
+  const wk=weekDates(viewMon);
+  const wl=["M","T","W","T","F","S","S"];
+  const c=document.getElementById("days");c.innerHTML="";
+  const tdy=today();
+  wk.forEach((s,i)=>{
+    const d=fromStr(s);const sp=daySpent(s);const pk=paydayKind(s);
+    const el=document.createElement("div");
+    el.className="day"+(s===sel?" sel":"")+(s===tdy?" today":"");
+    let payHtml="";
+    if(pk){const logged=S.paydays[s];const todo=!logged&&s<=tdy;if(todo)el.classList.add("todo");payHtml='<span class="pay">'+cur()+'</span>';}
+    let spTxt=sp>0?fmt(sp):(sp<0?"+"+fmt(-sp):"");
+    el.innerHTML=payHtml+'<div class="wd">'+wl[i]+'</div><div class="nm">'+d.getDate()+'</div><div class="sp">'+spTxt+'</div>';
+    el.onclick=()=>{ if(pk&&!S.paydays[s]&&s<=tdy){openPayday(pk,s);} sel=s; render(); };
+    c.appendChild(el);
+  });
+  const last=fromStr(wk[6]);
+  document.getElementById("wkTitle").textContent="Week of "+MON[viewMon.getMonth()]+" "+viewMon.getDate();
+  const swEnd=fromStr(wk[6]);const mNow=mondayOf(new Date());
+  const monKey=tStr(viewMon);
+  const lw=S.settings.weeklyLimit-weekSpent(viewMon);
+  const isPast=swEnd<mNow;
+  const sw=document.getElementById("sweepWrap"),swb=document.getElementById("sweepBtn");
+  if(isPast&&lw>0&&!S.sweeps[monKey]){
+    sw.classList.remove("hide");
+    swb.textContent="Sweep leftover "+fmt(lw)+" "+cur()+" to savings";
+    swb.onclick=()=>{S.saveLog.push({date:tStr(swEnd),amt:lw,note:"Weekly leftover"});S.sweeps[monKey]=true;save();toast(pick(SWEEP));milestone();render();};
+  }else{sw.classList.add("hide");}
+}
+
+function renderDayList(){
+  const c=document.getElementById("dayList");
+  const d=fromStr(sel);
+  const head=(sel===today()?"Today":wkName(d))+", "+MON[d.getMonth()]+" "+d.getDate();
+  let h='<h4>'+head+"</h4>";
+  const es=dayEntries(sel);
+  if(!es.length){h+='<div class="empty">No entries. Tap a day and add one.</div>';}
+  else{es.forEach((e,idx)=>{const isIn=e.amt<0;h+='<div class="item"><div class="n">'+(e.note||(isIn?"Money in":"Spent"))+(!isIn&&e.cat?'<span class="tag">'+e.cat+'</span>':"")+(isIn?'<small>added to spending</small>':"")+'</div><div style="display:flex;align-items:center"><span class="a '+(isIn?"in":"")+'">'+(isIn?"+":"-")+fmt(Math.abs(e.amt))+" "+cur()+'</span><button class="x" data-i="'+idx+'">&times;</button></div></div>';});}
+  c.innerHTML=h;
+  c.querySelectorAll(".x").forEach(b=>{b.onclick=()=>{const i=+b.dataset.i;S.expenses[sel].splice(i,1);if(!S.expenses[sel].length)delete S.expenses[sel];save();render();};});
+  document.getElementById("addDayLbl").textContent=(sel===today()?"today":MON[d.getMonth()]+" "+d.getDate());
+}
+function wkName(d){return["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][d.getDay()];}
+
+function renderSavings(){
+  const tot=saveTotal();
+  document.getElementById("savedTotal").textContent=fmt(tot);
+  document.getElementById("monthSaved").textContent=fmt(monthSaved())+" "+cur();
+  const f=document.getElementById("saveFill"),sub=document.getElementById("saveSub");
+  const gt=S.settings.goalTarget;
+  if(gt&&gt>0){const p=Math.max(0,Math.min(100,(tot/gt)*100));f.style.width=p+"%";sub.textContent=(S.settings.goalName||"Goal")+": "+fmt(tot)+" / "+fmt(gt)+" "+cur()+"  ("+Math.round(p)+"%)";}
+  else{const ms=monthSaved();const p=Math.max(0,Math.min(100,(ms/5000)*100));f.style.width=p+"%";sub.textContent="Month goal 5,000 "+cur()+" \u2014 you're at "+fmt(ms)+" "+cur();}
+}
+
+function renderTip(){
+  const doy=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/864e5);
+  document.getElementById("tip").textContent=TIPS[doy%TIPS.length];
+}
+
+function weekendInfo(){
+  const m=mondayOf(new Date());
+  const wk=weekDates(m);
+  const wd=(new Date().getDay()+6)%7;
+  const reserve=S.settings.weekendReserve||0;
+  const remWeek=S.settings.weeklyLimit-weekSpent(m);
+  const spendable=Math.max(0,remWeek-reserve);
+  const fri=daySpent(wk[4]),sat=daySpent(wk[5]),sun=daySpent(wk[6]);
+  let daysLeft=3; if(wd===5)daysLeft=2; else if(wd===6)daysLeft=1;
+  return {wd,reserve,remWeek,spendable,fri,sat,sun,daysLeft,isWknd:wd>=4};
+}
+function renderWeekend(){
+  const w=weekendInfo();
+  document.getElementById("wFri").textContent=fmt(w.fri);
+  document.getElementById("wSat").textContent=fmt(w.sat);
+  document.getElementById("wSun").textContent=fmt(w.sun);
+  const lbl=document.getElementById("wkendLbl"),num=document.getElementById("wkendNum"),sub=document.getElementById("wkendSub");
+  if(w.isWknd){
+    const names={4:"this Friday",5:"this Saturday",6:"this Sunday"};
+    lbl.textContent="spend "+names[w.wd];
+    const per=w.daysLeft>0?w.spendable/w.daysLeft:w.spendable;
+    num.textContent=fmt(Math.max(0,per));
+    sub.textContent="weekend left "+fmt(w.spendable)+" "+cur()+(w.reserve>0?" \u00b7 keeping "+fmt(w.reserve)+" for savings":"");
+  }else{
+    lbl.textContent="weekend plan (Fri\u2013Sun)";
+    num.textContent=fmt(w.spendable);
+    sub.textContent="lined up for the weekend"+(w.reserve>0?" after keeping "+fmt(w.reserve)+" for savings":"")+". Your daily number appears Friday.";
+  }
+}
+function renderCatSum(){
+  const wk=weekDates(viewMon);const tot={};
+  wk.forEach(s=>dayEntries(s).forEach(e=>{if(e.amt>0){const c=e.cat||"Other";tot[c]=(tot[c]||0)+e.amt;}}));
+  const order=["Food","Transport","Entertainment","Shopping","Other"];
+  const parts=order.filter(c=>tot[c]).map(c=>'<span>'+c+' <b>'+fmt(tot[c])+'</b></span>');
+  document.getElementById("catSum").innerHTML=parts.length?parts.join(""):'<span class="small">No spending logged this week yet.</span>';
+}
+
+function render(){document.getElementById("cur1").textContent=cur();renderToday();renderWeekend();renderWeek();renderCatSum();renderDayList();renderSavings();renderTip();}
+
+function setMode(m){mode=m;document.getElementById("modeOut").classList.toggle("on",m==="out");document.getElementById("modeIn").classList.toggle("on",m==="in");document.getElementById("destWrap").classList.toggle("hide",m==="out");document.getElementById("cats").classList.toggle("hide",m==="in");}
+
+function addEntry(){
+  const v=parseFloat(document.getElementById("amtInput").value);
+  if(!v||v<=0){toast("Type an amount first.");return;}
+  const note=document.getElementById("noteInput").value.trim();
+  if(mode==="in"){
+    const dest=document.getElementById("destSelect").value;
+    if(dest==="save"){S.saveLog.push({date:sel,amt:v,note:note||"Money in"});toast("Locked "+fmt(v)+" "+cur()+" to savings.");milestone();}
+    else{ if(!S.expenses[sel])S.expenses[sel]=[];S.expenses[sel].push({amt:-v,note:note||"Money in"});toast("Added "+fmt(v)+" "+cur()+" to spending.");}
+  }else{
+    if(!S.expenses[sel])S.expenses[sel]=[];S.expenses[sel].push({amt:v,note:note||cat,cat:cat});
+    const lw=S.settings.weeklyLimit-weekSpent(mondayOf(new Date()));
+    if(lw<0)toast(OVER);
+  }
+  document.getElementById("amtInput").value="";document.getElementById("noteInput").value="";
+  save();render();
+}
+
+function openPayday(kind,dateStr){
+  const ov=document.getElementById("paydayOvl");
+  const amt=kind==="15"?S.settings.p15a:S.settings.p30a;
+  const lk=kind==="15"?S.settings.p15s:S.settings.p30s;
+  document.getElementById("payTitle").textContent="Payday \u2014 the "+kind+"th";
+  document.getElementById("payAmount").value=amt;
+  document.getElementById("payLock").textContent="We'll lock "+fmt(lk)+" "+cur()+" to savings.";
+  ov.dataset.kind=kind;ov.dataset.date=dateStr;ov.dataset.lock=lk;
+  ov.classList.remove("hide");
+}
+function confirmPayday(){
+  const ov=document.getElementById("paydayOvl");
+  const dateStr=ov.dataset.date;const lk=parseFloat(ov.dataset.lock)||0;
+  const got=parseFloat(document.getElementById("payAmount").value)||0;
+  S.paydays[dateStr]={amount:got,locked:lk};
+  if(lk>0)S.saveLog.push({date:dateStr,amt:lk,note:"Payday lock"});
+  save();ov.classList.add("hide");toast(pick(PAYDAY));milestone();render();
+}
+
+function exportWeek(){
+  const wk=weekDates(viewMon);const c=cur();const L=[];
+  L.push("LIQUID \u2014 weekly report");
+  L.push("Week of "+MON[viewMon.getMonth()]+" "+viewMon.getDate()+" \u2013 "+MON[fromStr(wk[6]).getMonth()]+" "+fromStr(wk[6]).getDate());
+  L.push("");
+  let spent=0,moneyIn=0;const tot={};const wl=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+  wk.forEach((s,i)=>{
+    const es=dayEntries(s);
+    const ds=es.filter(e=>e.amt>0).reduce((a,e)=>a+e.amt,0);
+    const di=es.filter(e=>e.amt<0).reduce((a,e)=>a+(-e.amt),0);
+    spent+=ds;moneyIn+=di;
+    es.forEach(e=>{if(e.amt>0){const k=e.cat||"Other";tot[k]=(tot[k]||0)+e.amt;}});
+    const det=es.map(e=>(e.amt<0?"+":"")+fmt(Math.abs(e.amt))+(e.cat?" "+e.cat:"")+(e.note&&e.note!==e.cat?" ("+e.note+")":"")).join(", ");
+    L.push(wl[i]+" "+s.slice(8)+": "+(es.length?fmt(ds)+" "+c+(det?"  ["+det+"]":""):"\u2014"));
+  });
+  let payIn=0;wk.forEach(s=>{if(S.paydays[s])payIn+=(S.paydays[s].amount||0);});
+  L.push("");L.push("Spent total: "+fmt(spent)+" "+c);
+  ["Food","Transport","Entertainment","Shopping","Other"].forEach(k=>{if(tot[k])L.push("  "+k+": "+fmt(tot[k])+" "+c);});
+  if(moneyIn)L.push("Money in (to spending): "+fmt(moneyIn)+" "+c);
+  if(payIn)L.push("Payday received: "+fmt(payIn)+" "+c);
+  L.push("Weekly limit: "+fmt(S.settings.weeklyLimit)+" "+c);
+  const left=S.settings.weeklyLimit-(spent-moneyIn);
+  L.push((left>=0?"Left: ":"Over by: ")+fmt(Math.abs(left))+" "+c);
+  L.push("Saved all-time: "+fmt(saveTotal())+" "+c+"  \u00b7  this month: "+fmt(monthSaved())+" "+c);
+  const text=L.join("\n");
+  if(navigator.share){navigator.share({title:"Liquid weekly report",text:text}).catch(()=>showText(text));}
+  else if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>toast("Report copied. Paste it to me in chat.")).catch(()=>showText(text));}
+  else showText(text);
+}
+function showText(t){const w=window.open("","_blank");if(w){w.document.write("<pre style='white-space:pre-wrap;font:14px ui-monospace,monospace;padding:16px'>"+t.replace(/&/g,"&amp;").replace(/</g,"&lt;")+"</pre>");}else{prompt("Copy this report and paste it in chat:",t);}}
+
+let lastMilestone=0;
+function milestone(){const t=saveTotal();const step=Math.floor(t/10000);if(step>lastMilestone&&t>0){lastMilestone=step;setTimeout(()=>toast(fmt(t)+" "+cur()+" saved. Brick by brick."),1400);} else {lastMilestone=Math.max(lastMilestone,step);}}
+
+let toastT;
+function toast(msg){const e=document.getElementById("toast");e.textContent=msg;e.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove("show"),3200);}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+
+const TIPS=[
+"Spend it like you planned it. Future you is watching. \u2014 your senior",
+"Small leaks sink big ships. Track the little buys too.",
+"Eat at home today, eat out Friday. Same joy, less money.",
+"Walk one stop instead of the scooter. Free gym, free money.",
+"Every ruble you keep is a brick for the apartment.",
+"Liquid means calm. Always keep a little spare.",
+"You don't need it today. Sleep on it, decide tomorrow.",
+"Bonus came in? Half to savings before it disappears.",
+"Under budget feels better than any purchase.",
+"Pay yourself first. You earn a salary too.",
+"The car is built one quiet saved week at a time.",
+"Cheap habits, rich future. Boring, but it works.",
+"Coffee out is fine. Coffee out every day is rent.",
+"No new 'buy in parts' until the old one is finished.",
+"Alhamdulillah for today. Now let's keep it steady. \u2014 your senior"
+];
+const PAYDAY=["Payday. Savings locked first \u2014 good. Now live within the week.","Money in. Be its boss today, not next week.","New cash, same plan. You've got this."];
+const SWEEP=["Leftover swept to savings. That's how the car gets built.","Quiet win. Money you didn't spend is money you keep.","Nice. Boring weeks make rich years."];
+const OVER="Over for this week. Not a failure \u2014 just ease the next few days.";
+const SECRETS=[
+"Hey, it's your senior. Proud of you for starting this habit. Liquid, calm, free \u2014 keys to a car, then keys to a home. Keep going.",
+"Rule of the trade: measure twice, spend once.",
+"You at 30 will thank you at 23. Don't stop."
+];
+
+let tap=0,tapT;
+document.getElementById("brand").onclick=()=>{tap++;clearTimeout(tapT);tapT=setTimeout(()=>tap=0,1200);if(tap>=5){toast(SECRETS[(Math.floor(Date.now()/1000))%SECRETS.length]);tap=0;}};
+
+document.getElementById("modeOut").onclick=()=>setMode("out");
+document.getElementById("modeIn").onclick=()=>setMode("in");
+document.getElementById("cats").querySelectorAll("button").forEach(b=>{b.onclick=()=>{cat=b.dataset.c;document.getElementById("cats").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));};});
+document.getElementById("exportWeekBtn").onclick=exportWeek;
+document.getElementById("addBtn").onclick=addEntry;
+document.getElementById("prevWk").onclick=()=>{viewMon=addDays(viewMon,-7);const wk=weekDates(viewMon);sel=wk.includes(today())?today():wk[0];render();};
+document.getElementById("nextWk").onclick=()=>{viewMon=addDays(viewMon,7);const wk=weekDates(viewMon);sel=wk.includes(today())?today():wk[0];render();};
+document.getElementById("payConfirm").onclick=confirmPayday;
+document.getElementById("paySkip").onclick=()=>document.getElementById("paydayOvl").classList.add("hide");
+
+document.getElementById("openSettings").onclick=()=>{const s=S.settings;document.getElementById("sWeekly").value=s.weeklyLimit;document.getElementById("sReserve").value=s.weekendReserve||0;document.getElementById("s15a").value=s.p15a;document.getElementById("s15s").value=s.p15s;document.getElementById("s30a").value=s.p30a;document.getElementById("s30s").value=s.p30s;document.getElementById("sGoalName").value=s.goalName;document.getElementById("sGoalTarget").value=s.goalTarget;document.getElementById("setOvl").classList.remove("hide");};
+document.getElementById("closeSettings").onclick=()=>document.getElementById("setOvl").classList.add("hide");
+document.getElementById("saveSettings").onclick=()=>{const g=id=>parseFloat(document.getElementById(id).value)||0;S.settings.weeklyLimit=g("sWeekly");S.settings.weekendReserve=g("sReserve");S.settings.p15a=g("s15a");S.settings.p15s=g("s15s");S.settings.p30a=g("s30a");S.settings.p30s=g("s30s");S.settings.goalName=document.getElementById("sGoalName").value||"Goal";S.settings.goalTarget=g("sGoalTarget");save();document.getElementById("setOvl").classList.add("hide");toast("Plan saved.");render();};
+
+document.getElementById("exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="liquid-backup-"+today()+".json";a.click();toast("Backup downloaded.");};
+document.getElementById("importBtn").onclick=()=>document.getElementById("importFile").click();
+document.getElementById("importFile").onchange=(ev)=>{const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);S=Object.assign(dStore(),o);S.settings=Object.assign(dStore().settings,o.settings||{});save();toast("Backup restored.");render();}catch(e){toast("That file didn't look right.");}};r.readAsText(f);};
+document.getElementById("resetBtn").onclick=()=>{if(confirm("Erase all your data? This cannot be undone.")){S=dStore();save();document.getElementById("setOvl").classList.add("hide");toast("Fresh start.");render();}};
+
+(function manifest(){try{const m={name:"Liquid",short_name:"Liquid",display:"standalone",background_color:"#EDF1F4",theme_color:"#0E9F8E",start_url:".",icons:[{src:ICON512,sizes:"512x512",type:"image/png"}]};const b=new Blob([JSON.stringify(m)],{type:"application/manifest+json"});const l=document.createElement("link");l.rel="manifest";l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}})();
+
+load();
+lastMilestone=Math.floor(saveTotal()/10000);
+setMode("out");
+render();
+(function checkPayday(){const k=paydayKind(today());if(k&&!S.paydays[today()])openPayday(k,today());})();
+</script>
+</body>
+</html>
