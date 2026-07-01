@@ -251,6 +251,7 @@
   <p class="sub">Your real numbers. The app decides the rest.</p>
   <div class="settings-row"><label>Money you can spend now</label><input class="mono" id="sLiquid" type="number"></div>
   <div class="settings-row"><label>Savings you have now</label><input class="mono" id="sSavings" type="number"></div>
+  <div class="settings-row"><label>Fresh start date</label><input id="sStart" type="date" style="max-width:160px"></div>
   <div class="eyebrow" style="margin:14px 0 8px">how strict to be</div>
   <div class="settings-row"><label>Savings goal per month</label><input class="mono" id="sMonthlySave" type="number"></div>
   <div class="settings-row"><label>Daily survival floor (transport + basic food)</label><input class="mono" id="sFloor" type="number"></div>
@@ -279,9 +280,9 @@
 const ICON512="data:image/png;base64,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ACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABBAgAAggQAAAQJAAAIEgAAECQAACBIAABAkAAAgCABAABB/wN9uCda46b2DwAAAABJRU5ErkJggg==";
 const LS="liquid_v2";
 let mem=null;
-function dStore(){return{settings:{currency:"\u20BD",monthlySave:5000,dailyFloor:200,p15a:45000,p15s:2000,p30a:25000,p30s:3000,goalName:"Car fund",goalTarget:0,bills:[{id:"rent",name:"Rent",day:15,amount:25000,cat:"Rent"},{id:"util",name:"Utility",day:30,amount:2000,cat:"Utility"}]},tx:[],sav:[],debts:[],billPaid:{},paydayLogged:{},weekChecked:{},setupDone:false,createdAt:tStr(new Date())};}
+function dStore(){return{settings:{currency:"\u20BD",monthlySave:5000,dailyFloor:200,p15a:45000,p15s:2000,p30a:25000,p30s:3000,goalName:"Car fund",goalTarget:0,startDate:tStr(new Date()),bills:[{id:"rent",name:"Rent",day:15,amount:25000,cat:"Rent"},{id:"util",name:"Utility",day:30,amount:2000,cat:"Utility"}]},tx:[],sav:[],debts:[],billPaid:{},paydayLogged:{},weekChecked:{},setupDone:false,createdAt:tStr(new Date())};}
 let S=dStore();
-function load(){try{const r=localStorage.getItem(LS);if(r){const o=JSON.parse(r);S=Object.assign(dStore(),o);S.settings=Object.assign(dStore().settings,o.settings||{});if(!S.settings.bills)S.settings.bills=dStore().settings.bills;if(!S.debts)S.debts=[];if(!S.settings.monthlySave)S.settings.monthlySave=5000;if(S.settings.dailyFloor==null)S.settings.dailyFloor=200;}}catch(e){if(mem)S=mem;}}
+function load(){try{const r=localStorage.getItem(LS);if(r){const o=JSON.parse(r);S=Object.assign(dStore(),o);S.settings=Object.assign(dStore().settings,o.settings||{});if(!S.settings.bills)S.settings.bills=dStore().settings.bills;if(!S.debts)S.debts=[];if(!S.settings.monthlySave)S.settings.monthlySave=5000;if(S.settings.dailyFloor==null)S.settings.dailyFloor=200;if(!S.settings.startDate)S.settings.startDate=tStr(new Date());}}catch(e){if(mem)S=mem;}}
 function save(){mem=S;try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function pad(n){return String(n).padStart(2,"0");}
@@ -311,9 +312,9 @@ function lastPaydayOnBefore(s){for(let i=0;i<=40;i++){const ns=tStr(addDays(from
 function plan(){
   const t=today();const np=nextPaydayAfter(t);const daysLeft=Math.max(1,daysBetween(t,np));
   const bal=liquidNow();const m=t.slice(0,7);const last=new Date(fromStr(t).getFullYear(),fromStr(t).getMonth()+1,0).getDate();
-  let reservedBills=0;(S.settings.bills||[]).forEach(b=>{const dd=tStr(new Date(fromStr(t).getFullYear(),fromStr(t).getMonth(),Math.min(b.day,last)));if(!S.billPaid[b.id+"|"+m]&&dd<=np)reservedBills+=b.amount;});
+  let reservedBills=0;(S.settings.bills||[]).forEach(b=>{const dd=tStr(new Date(fromStr(t).getFullYear(),fromStr(t).getMonth(),Math.min(b.day,last)));if(!S.billPaid[b.id+"|"+m]&&dd<np)reservedBills+=b.amount;});
   const floorDay=S.settings.dailyFloor||0;const floor=floorDay*daysLeft;
-  const ps=lastPaydayOnBefore(t);const savedPeriod=(S.sav||[]).filter(e=>e.date>=ps&&e.date<=t&&e.amount>0).reduce((a,e)=>a+e.amount,0);
+  let ps=lastPaydayOnBefore(t);if(S.settings.startDate&&S.settings.startDate>ps)ps=S.settings.startDate;const savedPeriod=(S.sav||[]).filter(e=>e.date>=ps&&e.date<=t&&e.amount>0).reduce((a,e)=>a+e.amount,0);
   const saveTarget=(S.settings.monthlySave||0)/2;const saveNeed=Math.max(0,saveTarget-savedPeriod);
   const afterBills=bal-reservedBills;const afterFloor=afterBills-floor;
   const saveReserve=Math.max(0,Math.min(saveNeed,Math.max(0,afterFloor)));
@@ -334,7 +335,18 @@ function renderMain(){
   const p=plan();
   document.getElementById("balNum").textContent=fmt(p.bal)+" "+cur();
   document.getElementById("debtNum").textContent=fmt(p.dTot)+" "+cur();
-  const big=document.getElementById("canToday");big.textContent=fmt(p.todayLeft);big.classList.toggle("warn",p.emergency);
+  const big=document.getElementById("canToday");
+  const sd=S.settings.startDate;
+  if(sd&&today()<sd){
+    const dleft=Math.max(0,daysBetween(today(),sd));const dd=fromStr(sd).getDate();
+    big.textContent=dleft;big.classList.remove("warn");
+    document.getElementById("periodLbl").textContent="fresh start";
+    document.getElementById("canSub").textContent="day"+(dleft===1?"":"s")+" until your clean start (the "+dd+"th)";
+    const rb=document.getElementById("rewardBox");rb.className="reward";
+    rb.textContent="Until the "+dd+"th: just get there. Borrow about 1,000, eat, commute, nothing extra. The real plan switches on at payday.";
+    document.getElementById("weekBanner").classList.add("hide");return;
+  }
+  big.textContent=fmt(p.todayLeft);big.classList.toggle("warn",p.emergency);
   const dnm=fromStr(p.np).getDate();
   document.getElementById("periodLbl").textContent=p.daysLeft+" day"+(p.daysLeft>1?"s":"")+" until the "+dnm+"th";
   document.getElementById("canSub").textContent="safe to spend today \u00b7 decided for you";
@@ -346,6 +358,8 @@ function renderMain(){
   const m=tStr(mondayOf(new Date()));document.getElementById("weekBanner").classList.toggle("hide",!(S.setupDone&&!S.weekChecked[m]));
 }
 function renderSavings(){
+  const sd=S.settings.startDate;
+  if(sd&&today()<sd){document.getElementById("saveFill").style.width="0%";document.getElementById("savStatus").textContent="";document.getElementById("savStatus").className="status";document.getElementById("savSub").textContent="savings plan starts on the "+fromStr(sd).getDate()+"th";return;}
   const p=plan();const tgt=p.saveTarget;const done=p.savedPeriod;const f=document.getElementById("saveFill");
   const pct=tgt>0?Math.max(0,Math.min(100,done/tgt*100)):0;f.style.width=pct+"%";
   const st=document.getElementById("savStatus");
@@ -505,9 +519,9 @@ document.getElementById("debtConfirm").onclick=confirmDebt;
 document.getElementById("debtCancel").onclick=()=>document.getElementById("debtOvl").classList.add("hide");
 document.getElementById("exportWeekBtn").onclick=exportWeek;
 document.getElementById("addBill").onclick=()=>{S.settings.bills.push({id:uid(),name:"New bill",day:15,amount:0,cat:"Other"});renderBillEdit();};
-document.getElementById("openSettings").onclick=()=>{const s=S.settings;document.getElementById("sLiquid").value=Math.round(liquidNow());document.getElementById("sSavings").value=Math.round(savingsTotal());document.getElementById("sMonthlySave").value=s.monthlySave;document.getElementById("sFloor").value=s.dailyFloor;document.getElementById("s15a").value=s.p15a;document.getElementById("s15s").value=s.p15s;document.getElementById("s30a").value=s.p30a;document.getElementById("s30s").value=s.p30s;document.getElementById("sGoalName").value=s.goalName;document.getElementById("sGoalTarget").value=s.goalTarget;renderBillEdit();document.getElementById("setOvl").classList.remove("hide");};
+document.getElementById("openSettings").onclick=()=>{const s=S.settings;document.getElementById("sLiquid").value=Math.round(liquidNow());document.getElementById("sSavings").value=Math.round(savingsTotal());document.getElementById("sStart").value=s.startDate||today();document.getElementById("sMonthlySave").value=s.monthlySave;document.getElementById("sFloor").value=s.dailyFloor;document.getElementById("s15a").value=s.p15a;document.getElementById("s15s").value=s.p15s;document.getElementById("s30a").value=s.p30a;document.getElementById("s30s").value=s.p30s;document.getElementById("sGoalName").value=s.goalName;document.getElementById("sGoalTarget").value=s.goalTarget;renderBillEdit();document.getElementById("setOvl").classList.remove("hide");};
 document.getElementById("closeSettings").onclick=()=>document.getElementById("setOvl").classList.add("hide");
-document.getElementById("saveSettings").onclick=()=>{const g=id=>parseFloat(document.getElementById(id).value)||0;const s=S.settings;s.monthlySave=g("sMonthlySave");s.dailyFloor=g("sFloor");s.p15a=g("s15a");s.p15s=g("s15s");s.p30a=g("s30a");s.p30s=g("s30s");s.goalName=document.getElementById("sGoalName").value||"Goal";s.goalTarget=g("sGoalTarget");
+document.getElementById("saveSettings").onclick=()=>{const g=id=>parseFloat(document.getElementById(id).value)||0;const s=S.settings;s.startDate=document.getElementById("sStart").value||today();s.monthlySave=g("sMonthlySave");s.dailyFloor=g("sFloor");s.p15a=g("s15a");s.p15s=g("s15s");s.p30a=g("s30a");s.p30s=g("s30s");s.goalName=document.getElementById("sGoalName").value||"Goal";s.goalTarget=g("sGoalTarget");
   const wantLiq=g("sLiquid"),wantSav=g("sSavings");const diffL=wantLiq-liquidNow();if(Math.abs(diffL)>=1)addTx({date:today(),type:"adjust",amount:diffL,note:"Setup balance"});const diffS=wantSav-savingsTotal();if(Math.abs(diffS)>=1)S.sav.push({id:uid(),date:today(),amount:diffS,note:"Setup savings"});
   S.setupDone=true;save();document.getElementById("setOvl").classList.add("hide");toast("Saved.");render();};
 document.getElementById("exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="liquid-backup-"+today()+".json";a.click();toast("Backup downloaded.");};
@@ -517,7 +531,7 @@ document.getElementById("resetBtn").onclick=()=>{if(confirm("Erase all your data
 
 (function manifest(){try{const m={name:"Liquid",short_name:"Liquid",display:"standalone",background_color:"#EDF1F4",theme_color:"#0E9F8E",start_url:".",icons:[{src:ICON512,sizes:"512x512",type:"image/png"}]};const b=new Blob([JSON.stringify(m)],{type:"application/manifest+json"});const l=document.createElement("link");l.rel="manifest";l.href=URL.createObjectURL(b);document.head.appendChild(l);}catch(e){}})();
 
-load();lastMs=Math.floor(savingsTotal()/10000);setMode("out");render();
+load();if(S.settings.startDate&&today()<S.settings.startDate){viewMon=mondayOf(fromStr(S.settings.startDate));sel=S.settings.startDate;}lastMs=Math.floor(savingsTotal()/10000);setMode("out");render();
 (function start(){const k=paydayKind(today());if(k&&!S.paydayLogged[today()])openPayday(k,today());else if(!S.setupDone)document.getElementById("openSettings").click();})();
 </script>
 </body>
